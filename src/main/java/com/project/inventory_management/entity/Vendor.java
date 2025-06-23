@@ -1,53 +1,68 @@
 package com.project.inventory_management.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
-public class Vendor extends BaseEntity {
+public class Vendor extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
+    @NotBlank
     private String companyName;
-    private String gstNumber;
-    
-    
-    public Vendor(User user, String companyName, String gstNumber) {
-        this.user = user;
-        this.companyName = companyName;
-        this.gstNumber = gstNumber;
+
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
+
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL)
+    private List<Order> orders;
+
+    @Column(nullable = false)
+    private boolean approved = false;
+
+
+    public Vendor() {
     }
 
     
-    public Long getId() {
-        return id;
+    public Vendor(String createdBy, @NotBlank String username, @NotBlank String password, @NotBlank String role,
+            @NotBlank @Email String email, @NotBlank String companyName) {
+        super(createdBy, username, password, role, email);
+        this.companyName = companyName;
     }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
+
+
     public String getCompanyName() {
         return companyName;
     }
+
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-    public String getGstNumber() {
-        return gstNumber;
-    }
-    public void setGstNumber(String gstNumber) {
-        this.gstNumber = gstNumber;
+
+    public boolean isApproved() {
+        return approved;
     }
 
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+ 
 }
 

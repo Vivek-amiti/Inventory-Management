@@ -1,32 +1,46 @@
 package com.project.inventory_management.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
+import jakarta.validation.constraints.*;
 
 @Entity
-public class OrderItem extends BaseEntity {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "order_id")
+    @NotNull
     private Order order;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
+    @NotNull
     private Product product;
 
+    @Min(1)
     private int quantity;
 
-    private BigDecimal price;
+    @DecimalMin("0.0")
+    private double price;
 
+    
 
-    public OrderItem(Order order, Product product, int quantity, BigDecimal price) {
+    public OrderItem() {
+    }
+
+    
+
+    public OrderItem(@NotNull Order order, @NotNull Product product, @Min(1) int quantity,
+            @DecimalMin("0.0") double price) {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
         this.price = price;
     }
+
 
 
     public Long getId() {
@@ -61,12 +75,16 @@ public class OrderItem extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
+    
+
+
 }
+

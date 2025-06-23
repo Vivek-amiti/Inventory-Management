@@ -1,53 +1,51 @@
 package com.project.inventory_management.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
+import java.util.List;
 
 @Entity
-public class Client extends BaseEntity {
+public class Client extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @NotBlank
+    private String organizationName;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Order> orders;
 
-    private String businessName;
-    private String address;
-
-
-    public Client(User user, String businessName, String address) {
-        this.user = user;
-        this.businessName = businessName;
-        this.address = address;
+    
+    public Client() {
+        super();
     }
 
+    
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-    public String getBusinessName() {
-        return businessName;
-    }
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
+    public Client(String createdBy, String username, String password, String role, String email,
+            @NotBlank String organizationName) {
+        super(createdBy, username, password, role, email);
+        this.organizationName = organizationName;
     }
 
+
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    
 }
+
 

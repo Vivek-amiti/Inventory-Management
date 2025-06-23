@@ -1,7 +1,7 @@
 package com.project.inventory_management.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class PriceTier {
@@ -10,19 +10,30 @@ public class PriceTier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Min(1)
     private int minQuantity;
 
-    private BigDecimal price;
+    @DecimalMin("0.0")
+    private double price;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
+    @NotNull
     private Product product;
 
     
-    public PriceTier(int minQuantity, BigDecimal price, Product product) {
+
+    public PriceTier() {
+    }
+
+    
+
+    public PriceTier(@Min(1) int minQuantity, @DecimalMin("0.0") double price, @NotNull Product product) {
         this.minQuantity = minQuantity;
         this.price = price;
         this.product = product;
     }
+
 
 
     public Long getId() {
@@ -41,11 +52,11 @@ public class PriceTier {
         this.minQuantity = minQuantity;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -56,6 +67,8 @@ public class PriceTier {
     public void setProduct(Product product) {
         this.product = product;
     }
+
     
 }
+
 

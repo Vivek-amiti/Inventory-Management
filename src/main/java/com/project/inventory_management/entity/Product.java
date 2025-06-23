@@ -1,7 +1,9 @@
 package com.project.inventory_management.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
+import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 @Entity
 public class Product extends BaseEntity {
@@ -10,25 +12,41 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
-    private BigDecimal price;
+    private String description;
 
+    @Min(0)
     private int stock;
 
     @ManyToOne
     @JoinColumn(name = "vendor_id")
+    @NotNull
     private Vendor vendor;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PriceTier> priceTiers;
+
     
 
-    public Product(String name, BigDecimal price, int stock, Vendor vendor) {
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.vendor = vendor;
+    public Product() {
     }
 
     
+
+    public Product(String createdBy, @NotBlank String name, String description, @Min(0) int stock,
+            @NotNull Vendor vendor, List<PriceTier> priceTiers) {
+        super(createdBy);
+        this.name = name;
+        this.description = description;
+        this.stock = stock;
+        this.vendor = vendor;
+        this.priceTiers = priceTiers;
+    }
+
+
+
     public Long getId() {
         return id;
     }
@@ -45,12 +63,12 @@ public class Product extends BaseEntity {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getStock() {
@@ -69,5 +87,15 @@ public class Product extends BaseEntity {
         this.vendor = vendor;
     }
 
+    public List<PriceTier> getPriceTiers() {
+        return priceTiers;
+    }
+
+    public void setPriceTiers(List<PriceTier> priceTiers) {
+        this.priceTiers = priceTiers;
+    }
+
+    
 }
+
 

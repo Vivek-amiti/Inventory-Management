@@ -20,13 +20,18 @@ public abstract class BaseEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-
-    // public BaseEntity(String createdBy, LocalDateTime createdAt) {
-    //     this.createdBy = createdBy;
-    //     this.modifiedBy = createdBy;
-    // }
+    public BaseEntity() {
+    }
 
     
+
+    public BaseEntity(String createdBy) {
+        this.createdBy = createdBy;
+        this.modifiedBy = createdBy;
+    }
+
+
+
     public String getCreatedBy() {
         return createdBy;
     }
@@ -59,4 +64,5 @@ public abstract class BaseEntity {
         this.updatedAt = updatedAt;
     }
 
+    
 }
