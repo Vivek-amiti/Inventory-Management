@@ -20,7 +20,6 @@ public class User extends BaseEntity {
     @NotBlank
     private String role; // CLIENT, VENDOR, ADMIN
 
-    @NotBlank
     @Email
     private String email;
 

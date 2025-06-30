@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 public class Vendor extends User {
 
-    @NotBlank
     private String companyName;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
